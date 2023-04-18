@@ -1,0 +1,20 @@
+name: Push
+
+on:
+  push:
+
+jobs:
+  repro-earthly-kafka-hang:
+    name: Reproduce rdkakfa hang when in Earthly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Clone this repository
+
+      - name: Install Earthly
+        run: |
+          wget https://github.com/earthly/earthly/releases/download/v0.7.4/earthly-linux-$(dpkg --print-architecture) -O earthly --waitretry=10 --tries=5 --retry-connrefused
+          sudo install -o root ./earthly /usr/local/bin/earthly
+
+      - name: Reproduce
+        run: earthly -P +test

@@ -5,8 +5,8 @@ use rdkafka::{ClientConfig, consumer::{Consumer, StreamConsumer}, Message, produ
 #[tokio::main]
 async fn main() {
     let mut config = ClientConfig::new();
-    config.set("bootstrap.servers", "127.0.0.1:9092");
-    config.set("group.id", "some_group_id"); // This is a required parameter
+    config.set("bootstrap.servers", "localhost:9092");
+    config.set("group.id", "rust-rdkafka-roundtrip-example");
 
     let recents_producer: FutureProducer = config
     .create()

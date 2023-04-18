@@ -53,8 +53,8 @@ async fn main() {
 
     let consumer: StreamConsumer = ClientConfig::new()
         .set("bootstrap.servers", brokers)
-        .set("session.timeout.ms", "6000")
-        .set("enable.auto.commit", "false")
+        // .set("session.timeout.ms", "6000")
+        // .set("enable.auto.commit", "false")
         .set("group.id", "rust-rdkafka-roundtrip-example")
         .create()
         .expect("Consumer creation failed");

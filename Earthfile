@@ -19,15 +19,8 @@ test:
     COPY docker-compose.yml docker-compose.yml
     COPY src src
 
-    WITH DOCKER --pull mysql:5.7 --compose docker-compose.yml
+    WITH DOCKER --compose docker-compose.yml
         RUN rpk topic create "recents" --brokers "127.0.0.1:9092" \
-            && docker run \
-                --publish 3306:3306 \
-                --volume $(pwd)/mysql-init:/docker-entrypoint-initdb.d \
-                --env MYSQL_ROOT_PASSWORD=froyo \
-                --name mysql \
-                --detach \
-                mysql:5.7 \
             && /root/.cargo/bin/cargo run \
             && rpk topic consume "recents" --num 1 --brokers "127.0.0.1:9092"
     END

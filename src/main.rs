@@ -8,6 +8,10 @@ async fn main() {
     config.set("bootstrap.servers", "localhost:9092");
     config.set("group.id", "rust-rdkafka-roundtrip-example");
 
+    let recents_consumer: StreamConsumer = config
+        .create()
+        .expect("can create consumer from configuration");
+
     let recents_producer: FutureProducer = config
     .create()
     .expect("can create producer from configuration");
@@ -16,10 +20,6 @@ async fn main() {
         FutureRecord::to("recents").key("hello").payload("goodbye"),
         Timeout::After(Duration::new(5, 0)),
     ).await.unwrap();
-
-    let recents_consumer: StreamConsumer = config
-        .create()
-        .expect("can create consumer from configuration");
 
     recents_consumer
         .subscribe(&["recents"])

@@ -47,14 +47,11 @@ async fn main() {
 
     let producer: FutureProducer = ClientConfig::new()
         .set("bootstrap.servers", brokers)
-        .set("message.timeout.ms", "5000")
         .create()
         .expect("Producer creation error");
 
     let consumer: StreamConsumer = ClientConfig::new()
         .set("bootstrap.servers", brokers)
-        // .set("session.timeout.ms", "6000")
-        // .set("enable.auto.commit", "false")
         .set("group.id", "rust-rdkafka-roundtrip-example")
         .create()
         .expect("Consumer creation failed");
@@ -68,7 +65,6 @@ async fn main() {
                     FutureRecord::to(&topic)
                         .key(&i.to_string())
                         .payload("dummy")
-                        .timestamp(now()),
                 )
                 .unwrap()
                 .await
